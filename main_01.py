@@ -6,13 +6,27 @@ bot = telebot.TeleBot("7672525355:AAE-TEINCA5rdlFbxIkXvHJvdri15lfY6zg")
 
 @bot.message_handler(commands=['start'])
 def start(message):
+    bot.send_message(message.chat.id, f'Привет  😊')
     markup = types.ReplyKeyboardMarkup()
-    btn1 =types.KeyboardButton("Перейти на сайт", url='https://europaplus.ru/programs/top40')
+    btn1 =types.KeyboardButton("Перейти на сайт", )
     
     markup.row(btn1)
     btn2 = types.KeyboardButton("Удалить фото")
     btn3 = types.KeyboardButton("Изменить текст")
     markup.add(btn2, btn3)
+    file = open("./photo_01.jpg", 'rb')
+    bot.send_photo(message.chat.id, file, reply_markup=markup)
+    # bot.send_audio(message.chat.id, file, reply_markup=markup)
+    # bot.send_video(message.chat.id, file, reply_markup=markup
+    # bot.send_message(message.chat.id, 'Привет', reply_markup=markup)
+    bot.send_audio(message.chat.id, file, reply_markup=markup)
+    bot.register_next_step_handler(message, on_click)
+
+def on_click(message):
+    if message.text == 'Перейти на сайт':
+        bot.send_message(message.chat.id, "Website is open")
+    elif message.text == 'Удалить фото':
+        bot.send_message(message.chat.id, "Delete")
 
 
 
