@@ -1,7 +1,15 @@
 import telebot
+from telebot import types
 import webbrowser
 bot = telebot.TeleBot("7672525355:AAE-TEINCA5rdlFbxIkXvHJvdri15lfY6zg")
 
+
+
+@bot.message_handler(commands=['site', 'website'])
+def site(message):
+    markup = types.InlineKeyboardMarkup()
+    markup.add(types.InlineKeyboardButton("Перейти на сайт", url='https://novosibirsk.drom.ru/'))
+    bot.reply_to(message, 'Pleese', reply_markup=markup)
 
 
 @bot.message_handler(commands=['start', 'main', 'hello'])
@@ -21,9 +29,7 @@ def info(message):
     elif message.text.lower() == 'id':
         bot.reply_to(message, f'ID: {message.from_user.id}')
     
-@bot.message_handler(commands=['site', 'website'])
-def site(message):
-    webbrowser.open_new('https://novosibirsk.drom.ru/')
+
 
 
 
