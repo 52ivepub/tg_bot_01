@@ -8,6 +8,7 @@ name = None
 
 @bot.message_handler(commands=['start'])
 def start(message):
+    """Бот регистрации пользователя """
     conn = sqlite3.connect('itproger.sqlite3')
     cur = conn.cursor()
 

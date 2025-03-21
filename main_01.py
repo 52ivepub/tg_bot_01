@@ -6,6 +6,7 @@ bot = telebot.TeleBot("7672525355:AAE-TEINCA5rdlFbxIkXvHJvdri15lfY6zg")
 
 @bot.message_handler(commands=['start'])
 def start(message):
+    """Эхо бот"""
     bot.send_message(message.chat.id, f'Привет  😊')
     markup = types.ReplyKeyboardMarkup()
     btn1 =types.KeyboardButton("Перейти на сайт", )

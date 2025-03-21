@@ -15,6 +15,7 @@ def start(message):
 
 @bot.message_handler(content_types=['text'])
 def get_weather(message):
+    """Бот о погоде"""
     city = message.text.strip().lower()
     res = requests.get(f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API}&units=metric')
     if res.status_code == 200:    
