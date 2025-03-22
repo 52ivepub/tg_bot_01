@@ -28,9 +28,8 @@ def summa(message):
         btn2 = types.InlineKeyboardButton('EUR/USD', callback_data='eur/usd')
         btn3 = types.InlineKeyboardButton('USD/GBP', callback_data='usd/GBP')
         btn5 = types.InlineKeyboardButton('RUB/USD', callback_data='rub/usd')
-        btn6 = types.InlineKeyboardButton('USD/RUB', callback_data='usd/rub')
         btn4 = types.InlineKeyboardButton('Другое значение', callback_data='else')
-        markup.add(btn1, btn2, btn3, btn5, btn6, btn4)
+        markup.add(btn1, btn2, btn3, btn5, btn4)
         bot.send_message(message.chat.id, 'Выберите пару валют', reply_markup=markup)
     else:
         bot.send_message(message.chat.id, 'Введены некорректные данные')
@@ -40,10 +39,24 @@ def summa(message):
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback(call):
-    values = call.data.upper().split('/')
-    res = currency.convert(amount, values[0], values[1])
-    bot.send_message(call.message.chat.id, f'Получается {round(res, 2)}. Можете заново вписать сумму')
-    bot.register_next_step_handler(call.message, summa)
+    if call.data != 'else':    
+        values = call.data.upper().split('/')
+        res = currency.convert(amount, values[0], values[1])
+        bot.send_message(call.message.chat.id, f'Получается {round(res, 2)}. Можете заново вписать сумму')
+        bot.register_next_step_handler(call.message, summa)
+    else:
+        bot.send_message(call.message.chat.id, 'Введите пару значений через слэш')
+        bot.register_next_step_handler(call.message, mycurrency)
 
+    
+def mycurrency(message):
+    try:
+        values = message.text.upper().split('/')
+        res = currency.convert(amount, values[0], values[1])
+        bot.send_message(message.chat.id, f'Получается {round(res, 2)}. Можете заново вписать сумму')
+        bot.register_next_step_handler(message, summa)
+    except Exception:
+        bot.send_message(message.chat.id, f'Что то не так. Проверьте данные')
+        bot.register_next_step_handler(message, mycurrency)
 
 bot.polling(none_stop=True)
