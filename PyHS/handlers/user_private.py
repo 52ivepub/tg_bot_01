@@ -4,8 +4,10 @@
 
 from aiogram import F, Bot, Router, types
 from aiogram.filters import Command, or_f
+from filters.chat_types import ChatTypesFilter
 
 user_private_router = Router()
+user_private_router.message.filter(ChatTypesFilter(['private']))
 
 @user_private_router.message(Command('start'))
 async def start(message: types.Message):
