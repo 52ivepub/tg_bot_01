@@ -1,5 +1,7 @@
 from aiogram import F, Bot, Router, types
+
 from aiogram.filters import Command, or_f
+from aiogram.utils.formatting import as_list, as_marked_section, Bold
 from filters.chat_types import ChatTypesFilter
 from keyboards import reply
 
@@ -31,13 +33,38 @@ async def about(message: types.Message):
 @user_private_router.message(F.text.lower() == 'варианты оплаты')
 @user_private_router.message(Command('payment'))
 async def payment(message: types.Message):
-    await message.answer('Варианты оплаты:')
+
+    text = as_marked_section(
+        Bold("Варианты оплаты"),
+        "Картой в боте",
+        "При получении карта/кеш",
+        "В заведении",
+        marker='✅'
+    )
+    await message.answer(text.as_html())
 
 
 @user_private_router.message(F.text.lower().contains('доставк'))
 @user_private_router.message(Command('shipping'))
 async def shipping(message: types.Message):
-    await message.answer('Варианты доставки:')
+    text = as_list(
+        as_marked_section(
+        Bold("Варианты доставки"),
+        "Курьер",
+        "Самовынос",
+        "Покушаю у вас",
+        marker='✅'
+    ),
+    as_marked_section(
+        Bold("Нельзя"),
+        'Почта',
+        'Голуби',
+        marker='❌'
+         
+     ),
+    sep='\n------------------------------\n'
+    )
+    await message.answer(text.as_html())
 
 
 # @user_private_router.message(F.text.lower().contains('доставк'))
