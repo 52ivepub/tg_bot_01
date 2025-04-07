@@ -1,14 +1,18 @@
 """Бот пиццерии"""
-
 import asyncio
 import os
-from aiogram import Bot, Dispatcher, types
+from dotenv import find_dotenv, load_dotenv
+
+from aiogram import Bot, Dispatcher, Router, types
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.filters import Command
-from dotenv import find_dotenv, load_dotenv
-from handlers.user_private import user_private_router
+
+
+from middlewares.db import CounterMiddleware
 from common.bot_cmds_list import private
+
+from handlers.user_private import user_private_router
 from handlers.user_group import user_group_router
 from handlers.admin_private import admin_router
 
@@ -21,11 +25,12 @@ bot = Bot(token=os.getenv('TOKEN'), default=DefaultBotProperties(parse_mode=Pars
 bot.my_admins_list = []
 dp = Dispatcher()
 
+
 dp.include_routers(user_private_router)
 dp.include_routers(user_group_router)
 dp.include_router(admin_router)
 
-
+admin_router.message.outer_middleware(CounterMiddleware())
 
 
     
