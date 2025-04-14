@@ -78,7 +78,9 @@ async def delete_product_callback(callback: types.CallbackQuery, session: AsyncS
     await callback.answer("Товар удален")
     await callback.message.answer("Товар удален!")
 
+
 # FSM:
+
 
 # Становимся в состояние ожидания ввода name
 @admin_router.callback_query(StateFilter(None), F.data.startswith("change_"))
