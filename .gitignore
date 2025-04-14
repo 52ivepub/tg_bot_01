@@ -2,6 +2,9 @@
 __pycache__/
 *.py[cod]
 *$py.class
+.vscode
+.gitignore
+my_base.db
 
 # C extensions
 *.so

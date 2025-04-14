@@ -22,7 +22,7 @@ from handlers.user_group import user_group_router
 from handlers.admin_private import admin_router
 
 
-ALOWED_UPDATES = ["message, edited_message"]
+ALOWED_UPDATES = ["message", "edited_message", "callback_query"]
 
 
 bot = Bot(
@@ -45,7 +45,7 @@ async def on_startup(bot):
 
 
 async def on_shutdown(bot):
-    print("бот лег")
+    print("=========БОТ УСНУЛ=========")
 
 
 async def main():
@@ -59,7 +59,7 @@ async def main():
     await bot.set_my_commands(
         commands=private, scope=types.BotCommandScopeAllPrivateChats()
     )
-    await dp.start_polling(bot, allowed_updates=ALOWED_UPDATES)
+    await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
 
 
 if __name__ == "__main__":

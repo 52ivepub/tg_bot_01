@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from database.models import Product
@@ -22,7 +22,7 @@ async def orm_get_products(session: AsyncSession):
     return result.scalars().all()
 
 
-async def orm_get_products(session: AsyncSession, product_id: int):
+async def orm_get_product(session: AsyncSession, product_id: int):
     query = select(Product).where(Product.id==product_id)
     result = await session.execute(query)
     return result.scalars()
@@ -35,6 +35,11 @@ async def orm_update_product(session: AsyncSession, product_id: int, data):
             price=float(data['price']),
             image=data['image'],
     )
-    result = await session.execute(query)
+    await session.execute(query)
     await session.commit()
     
+
+async def orm_delete_product(session: AsyncSession, product_id: int):
+    query = delete(Product).where(Product.id == product_id)
+    await session.execute(query)
+    await session.commit()
