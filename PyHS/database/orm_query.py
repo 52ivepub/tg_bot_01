@@ -1,7 +1,31 @@
+import math
 from sqlalchemy import delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from database.models import Product
+
+
+class Paginator:
+    def __init__(self, array:list | tuple, page: int=1, per_page: int=1):
+        self.array = array
+        self.per_page = per_page
+        self.page = page
+        self.len = len(self.array)
+        self.pages = math.ceil(self.len / self.per_page)
+
+    
+    def _get_slice(self):
+        start = (self.page - 1) * self.per_page
+        stop = start + self.per_page
+        return self.array[start:stop]
+    
+
+    def get_page(self):
+        page_items = self.__get_slice()
+        return page_items
+
+    
+
 
 
 async def orm_add_product(session: AsyncSession, data: dict):
